@@ -17,7 +17,7 @@ export default function Home() {
         {
           user.isSignedIn ? 
           <>
-            <h1>Welcom to T3 Stack Project</h1>
+            <h1 className="text-white">Welcom to T3 Stack Project</h1>
             <button className="bg-white"><SignOutButton/></button>
           </> 
           : 

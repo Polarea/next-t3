@@ -6,15 +6,41 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "cockroachdb"
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Instructor {
+  id             Int             @id @default(sequence())
+  name           String
+  qualifications Qualification[] // One-to-many relationship with Qualification
 
-    @@index([name])
+  @@index([name])
+}
+
+model Qualification {
+  id          Int          @id @default(sequence())
+  name        String
+  instructors Instructor[] // Many-to-many relationship with Instructor
+
+  @@index([name])
+}
+
+model School {
+  id        Int      @id @default(sequence())
+  name      String
+  courses   Course[] // One-to-many relationship with Course
+
+  @@index([name])
+}
+
+model Course {
+  id         Int      @id @default(sequence())
+  name       String
+  startDate  DateTime
+  endDate    DateTime
+  schoolId   Int
+  school     School   @relation(fields: [schoolId], references: [id]) // Many-to-one relationship with School
+
+  @@index([name])
 }
