@@ -1,17 +1,12 @@
-import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+export const instructorRouter = createTRPCRouter({
+  get: publicProcedure
+    .query(async ({ctx}) => {
+      return ctx.db.instructor.findMany();
     }),
 
-  create: publicProcedure
+  /* create: publicProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.post.create({
@@ -27,5 +22,5 @@ export const postRouter = createTRPCRouter({
     });
 
     return post ?? null;
-  }),
+  }), */
 });

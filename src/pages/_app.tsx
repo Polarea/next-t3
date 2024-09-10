@@ -9,13 +9,13 @@ import { ClerkProvider} from "@clerk/nextjs";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <div className={GeistSans.className}>
-      <ClerkProvider {...pageProps}>
       <html lang="en">
-        <body>
-          <Component {...pageProps} />
-        </body>
-      </html>
-      </ClerkProvider>      
+          <body>
+            <ClerkProvider {...pageProps}>
+              <Component {...pageProps} />
+            </ClerkProvider> 
+          </body>
+      </html>     
     </div>
   );
 };
