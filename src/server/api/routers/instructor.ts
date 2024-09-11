@@ -1,10 +1,21 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { z } from "zod";
+import { createTRPCRouter, publicProcedure} from "~/server/api/trpc";
 
 export const instructorRouter = createTRPCRouter({
-  get: publicProcedure
+  getAll: publicProcedure
     .query(async ({ctx}) => {
-      return ctx.db.instructor.findMany();
+      return (await ctx.db.instructor.findMany({select: {id: true, name: true, qualifications:true}}));
     }),
+  add: publicProcedure
+  .input(z.object({ name: z.string() }))
+  .mutation(async ({ctx, input}) => {
+    return ctx.db.instructor.create({
+      data : {
+        name: input.name,
+      }
+    });
+  })
+  });
 
   /* create: publicProcedure
     .input(z.object({ name: z.string().min(1) }))
@@ -23,4 +34,3 @@ export const instructorRouter = createTRPCRouter({
 
     return post ?? null;
   }), */
-});
